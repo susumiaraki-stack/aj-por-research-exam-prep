@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เตรียมสอบปลายภาค การวิจัยทางการศึกษาและวิจัยในชั้นเรียน — Aj. Por</title>
+  <meta name="description" content="เว็บแอปพลิเคชันแบบ Interactive สำหรับเตรียมสอบปลายภาควิชาการวิจัยทางการศึกษาและวิจัยในชั้นเรียน (Educational & Classroom Action Research) ครบทั้งเนื้อหาละเอียด สรุปย่อ สูตรคำนวณ แบบฝึกหัดอาจารย์ 20 ข้อ และจำลองสอบจริง 40 ข้อ">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&family=Sarabun:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ====================================================================
+       STICKY HEADER & 6-TAB NAVIGATION
+       ==================================================================== -->
+  <header class="app-header">
+    <div class="header-top">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">CAR</div>
+        <div class="brand-text">
+          <h1>การวิจัยทางการศึกษาและวิจัยในชั้นเรียน</h1>
+          <p>Interactive Final Exam Prep • ขอบเขตสอบปลายภาค Aj. Por ครบ 100%</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button type="button" class="overall-progress-pill" id="headerProgressPill" title="คลิกเพื่อดูแดชบอร์ดความก้าวหน้าการเตรียมสอบ">
+          <span class="pill-label">ความพร้อมสอบ</span>
+          <div class="mini-progress-bar">
+            <div class="mini-progress-fill" id="headerProgressFill"></div>
+          </div>
+          <strong id="headerProgressText">0%</strong>
+        </button>
+
+        <button type="button" class="icon-btn" id="themeToggleBtn" aria-label="สลับโหมดสีมืด/สว่าง">🌙</button>
+      </div>
+    </div>
+
+    <div class="nav-wrapper">
+      <nav class="nav-tabs" aria-label="เมนูหลัก 6 โหมดการเรียนรู้">
+        <button type="button" class="nav-tab active" data-tab="tab-study">
+          <span class="tab-num">1</span> อ่านอย่างละเอียด
+        </button>
+        <button type="button" class="nav-tab" data-tab="tab-summary">
+          <span class="tab-num">2</span> อ่านอย่างย่อ (Mind Map)
+        </button>
+        <button type="button" class="nav-tab" data-tab="tab-cram">
+          <span class="tab-num">3</span> สรุปก่อนสอบ (Cheat Sheet)
+        </button>
+        <button type="button" class="nav-tab" data-tab="tab-ajpor">
+          <span class="tab-num">4</span> แบบทดสอบ อ.ปอ (20 ข้อ)
+        </button>
+        <button type="button" class="nav-tab" data-tab="tab-mock">
+          <span class="tab-num">5</span> จำลองสอบจริง (40 ข้อ)
+        </button>
+        <button type="button" class="nav-tab" data-tab="tab-tools">
+          <span class="tab-num">6</span> เครื่องมือคำนวณ &amp; Flashcards
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ====================================================================
+       MAIN CONTENT PANELS
+       ==================================================================== -->
+  <main class="app-main">
+
+    <!-- ==================================================================
+         TAB 1: DETAILED STUDY GUIDE (หน้าอ่านอย่างละเอียด)
+         ================================================================== -->
+    <section id="tab-study" class="tab-panel active">
+      <div class="page-hero">
+        <div class="page-hero-info">
+          <span class="hero-eyebrow">📚 โหมดที่ 1 • Detailed Study Guide</span>
+          <h2>สรุปเนื้อหาเชิงลึกครบทุกขอบเขตการสอบปลายภาค</h2>
+          <p>อธิบายทฤษฎีอย่างเป็นระบบ พร้อมตัวอย่างสถานการณ์ในชั้นเรียนจริง ข้อควรระวังที่มักออกสอบหลอก ระบบค้นหาคำศัพท์ทันที และบันทึกหัวข้อที่อ่านจบแล้ว</p>
+        </div>
+        <div style="display:flex; gap:0.55rem; flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm" id="expandAllTopicsBtn">📂 เปิดเนื้อหาทั้งหมด</button>
+          <button type="button" class="btn btn-outline btn-sm" id="collapseAllTopicsBtn">📁 ย่อเก็บทั้งหมด</button>
+        </div>
+      </div>
+
+      <div class="study-toolbar">
+        <div class="search-row">
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="search" id="studySearchInput" class="search-input" placeholder="ค้นหาคำศัพท์ ทฤษฎี สถิติ หรือหัวข้อ เช่น IOC, t-test, แบ่งชั้นภูมิ, E1/E2, อภิปรายผล...">
+            <button type="button" id="clearStudySearchBtn" class="clear-search-btn" title="ล้างคำค้นหา">✕</button>
+          </div>
+          <span id="studyMatchCount" style="font-size:0.86rem; color:var(--text-muted); font-family:var(--font-heading);"></span>
+        </div>
+
+        <div class="filter-pills" id="studyCategoryPills"></div>
+      </div>
+
+      <div class="accordion-list" id="studyAccordionList"></div>
+    </section>
+
+    <!-- ==================================================================
+         TAB 2: QUICK SUMMARY / MIND MAP CARDS (หน้าอ่านอย่างย่อ)
+         ================================================================== -->
+    <section id="tab-summary" class="tab-panel">
+      <div class="page-hero">
+        <div class="page-hero-info">
+          <span class="hero-eyebrow">🗺️ โหมดที่ 2 • Quick Summary &amp; Mind Map Cards</span>
+          <h2>การ์ดสรุปคอนเซ็ปต์สั้นกระชับ &amp; ตารางเปรียบเทียบแยกความต่าง</h2>
+          <p>รวบยอด Keyword สำคัญทั้งวิชาให้อยู่ในรูปแบบการ์ดอ่านไว พร้อม 4 ตารางเปรียบเทียบจุดที่นักศึกษามักสับสนมากที่สุดในห้องสอบ</p>
+        </div>
+      </div>
+
+      <h3 class="section-heading" style="margin-top:0.25rem;">🧠 Mind Map Concept Cards (6 เสาหลักของการสอบ)</h3>
+      <div class="mindmap-grid" id="mindMapGrid"></div>
+
+      <h3 class="section-heading">⚖️ ตารางเปรียบเทียบแยกความแตกต่างแบบชัดเจน</h3>
+      <div id="comparisonTablesContainer"></div>
+    </section>
+
+    <!-- ==================================================================
+         TAB 3: LAST-MINUTE CHEAT SHEET (หน้าสรุปอ่านก่อนสอบ)
+         ================================================================== -->
+    <section id="tab-cram" class="tab-panel">
+      <div class="page-hero">
+        <div class="page-hero-info">
+          <span class="hero-eyebrow">⚡ โหมดที่ 3 • Last-Minute Cheat Sheet / One-Page Cram</span>
+          <h2>สรุปสูตรคำนวณ เกณฑ์ตัวเลข &amp; ทริคดูโจทย์ตอบใน 5 วินาที</h2>
+          <p>ออกแบบมาเพื่อกวาดสายตาทบทวน 15 นาทีสุดท้ายหน้าห้องสอบ รวมทุกตัวเลขมาตรฐานและคีย์เวิร์ดชี้เป็นชี้ตาย</p>
+        </div>
+        <button type="button" class="btn btn-primary no-print" id="printCheatSheetBtn">🖨️ พิมพ์ / บันทึกเป็น PDF</button>
+      </div>
+
+      <div class="cram-grid">
+        <div class="cram-box highlight-indigo">
+          <h3>📐 สูตรคำนวณที่ต้องจำเข้าห้องสอบ</h3>
+          <div id="cramFormulasList"></div>
+        </div>
+
+        <div class="cram-box highlight-teal">
+          <h3>🎯 เกณฑ์ตัวเลขมาตรฐานทุกตัว</h3>
+          <div id="cramThresholdsList"></div>
+          <div class="exam-alert-box" style="margin-top:1rem; margin-bottom:0;">
+            <strong class="box-title">⚠️ เตือนความจำเรื่อง "ค่าร้อยละ"</strong>
+            ระวังการใช้ค่าร้อยละเมื่อ<strong>ขนาดกลุ่มตัวอย่าง (N) มีขนาดเล็กเกินไป</strong> เพราะจะทำให้ตัวเลขดูสูงเกินจริง คลาดเคลื่อน และไม่สะท้อนการกระจายของข้อมูล!
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-heading">🚀 ทริคสแกนคีย์เวิร์ดโจทย์ ฟันธงคำตอบภายใน 5 วินาที</h3>
+      <div class="five-sec-grid" id="cramFiveSecGrid"></div>
+    </section>
+
+    <!-- ==================================================================
+         TAB 4: AJ. POR'S PRACTICE QUIZ - 20 ITEMS (โหมดแบบทดสอบของอาจารย์)
+         ================================================================== -->
+    <section id="tab-ajpor" class="tab-panel">
+      <div class="page-hero">
+        <div class="page-hero-info">
+          <span class="hero-eyebrow">👩‍🏫 โหมดที่ 4 • Aj. Por's Official Practice Quiz</span>
+          <h2>แบบทดสอบฝึกฝนของอาจารย์ปอ ครบทั้ง 20 ข้อ (ไม่ย่อ)</h2>
+          <p>ส่วนที่ 1 ปรนัย 4 ตัวเลือก (ข้อ 1–17) และส่วนที่ 2 วิเคราะห์และคำนวณ (ข้อ 18–20 รองรับทั้งการพิมพ์ตอบเช็คคำตอบทันที และแบบตัวเลือกจำลอง) พร้อมคำอธิบายเฉลยละเอียดทุกข้อ</p>
+        </div>
+      </div>
+
+      <div class="quiz-controls-bar">
+        <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+          <span class="font-heading" style="font-size:0.9rem; font-weight:600;">โหมดการตรวจคำตอบ:</span>
+          <div class="mode-switch-group">
+            <button type="button" class="mode-switch-btn active" data-aj-mode="instant">⚡ ตรวจคำตอบทันทีทีละข้อ</button>
+            <button type="button" class="mode-switch-btn" data-aj-mode="end">📝 ทำครบแล้วส่งตรวจทีเดียว</button>
+          </div>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" id="resetAjPorQuizBtn">🔄 รีเซ็ตเริ่มทำใหม่</button>
+      </div>
+
+      <div id="ajPorScoreBanner" style="display:none;"></div>
+      <div id="ajPorQuizContainer"></div>
+    </section>
+
+    <!-- ==================================================================
+         TAB 5: MOCK FINAL EXAM - 40 ITEMS (โหมดจำลองสอบปลายภาคเสมือนจริง)
+         ================================================================== -->
+    <section id="tab-mock" class="tab-panel">
+      <div class="page-hero">
+        <div class="page-hero-info">
+          <span class="hero-eyebrow">🎓 โหมดที่ 5 • Mock Final Exam Simulator</span>
+          <h2>จำลองสอบปลายภาคเสมือนจริง (ปรนัย 4 ตัวเลือก ชุดใหม่ 40 ข้อ)</h2>
+          <p>ตรงตามโครงสร้างข้อสอบจริง 40 ข้อ ครอบคลุมทุกประเด็นที่เหลือในขอบเขตการสอบ มีจับเวลาถอยหลัง สุ่มลำดับข้อ ปักธงคั่นหน้า และระบบวิเคราะห์จุดอ่อนรายหัวข้อ</p>
+        </div>
+      </div>
+
+      <div id="mockExamRoot"></div>
+    </section>
+
+    <!-- ==================================================================
+         TAB 6: INTERACTIVE RESEARCH TOOLS, FLASHCARDS & PROGRESS DASHBOARD
+         ================================================================== -->
+    <section id="tab-tools" class="tab-panel">
+      <div class="page-hero">
+        <div class="page-hero-info">
+          <span class="hero-eyebrow">🧰 โหมดที่ 6 • Research Tools, Flashcards &amp; Progress</span>
+          <h2>การ์ดทบทวนคำศัพท์ เครื่องคิดเลขวิจัยจำลอง &amp; สถิติความก้าวหน้า</h2>
+          <p>พลิกการ์ดทบทวนคอนเซ็ปต์ ทดลองคำนวณสูตรวิจัยจริงทีละขั้น (คะแนนพัฒนาการ, E1/E2 ±2.5%, IOC, ตาราง Krejcie &amp; Morgan) และติดตามความพร้อมของคุณ</p>
+        </div>
+      </div>
+
+      <div class="subtool-nav">
+        <button type="button" class="subtool-btn active" data-subtool="sub-flashcards">🗂️ Flashcards ทบทวนคำศัพท์ (30 ใบ)</button>
+        <button type="button" class="subtool-btn" data-subtool="sub-calculators">🧮 เครื่องคำนวณวิจัยจำลอง (Mini Calculators)</button>
+        <button type="button" class="subtool-btn" data-subtool="sub-dashboard">📈 แดชบอร์ดความก้าวหน้า (Progress Dashboard)</button>
+      </div>
+
+      <!-- Sub-panel A: Flashcards -->
+      <div id="sub-flashcards" class="subtool-panel">
+        <div class="quiz-controls-bar" style="max-width:680px; margin:0 auto 1.25rem;">
+          <div class="mode-switch-group">
+            <button type="button" class="mode-switch-btn active" data-fc-filter="all">ทั้งหมด (30)</button>
+            <button type="button" class="mode-switch-btn" data-fc-filter="unmastered">ที่ยังไม่แม่น</button>
+            <button type="button" class="mode-switch-btn" data-fc-filter="review">ทบทวนซ้ำ</button>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.65rem;">
+            <span id="flashcardStatsLine" style="font-size:0.83rem; color:var(--text-muted);"></span>
+            <button type="button" class="btn btn-outline btn-sm" id="fcShuffleBtn">🔀 สับไพ่</button>
+          </div>
+        </div>
+
+        <div id="flashcardStageArea"></div>
+      </div>
+
+      <!-- Sub-panel B: Mini Calculators -->
+      <div id="sub-calculators" class="subtool-panel" style="display:none;">
+        <div class="calc-grid">
+
+          <!-- Calculator 1: Development Gain Score % -->
+          <div class="calc-card">
+            <h3>📈 1. เครื่องคำนวณร้อยละคะแนนพัฒนาการ</h3>
+            <p style="font-size:0.88rem; color:var(--text-muted);">คำนวณร้อยละของคะแนนความก้าวหน้าเทียบจากคะแนนเต็ม (สูตรมาตรฐานข้อ 18)</p>
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.6rem;">
+              <div class="form-group">
+                <label for="calcFullScore">คะแนนเต็ม</label>
+                <input type="number" id="calcFullScore" class="form-input" value="30" min="1" step="any">
+              </div>
+              <div class="form-group">
+                <label for="calcPreScore">ก่อนเรียน (Pre)</label>
+                <input type="number" id="calcPreScore" class="form-input" value="12" min="0" step="any">
+              </div>
+              <div class="form-group">
+                <label for="calcPostScore">หลังเรียน (Post)</label>
+                <input type="number" id="calcPostScore" class="form-input" value="24" min="0" step="any">
+              </div>
+            </div>
+            <div class="calc-output" id="calcGainOutput"></div>
+          </div>
+
+          <!-- Calculator 2: E1/E2 Efficiency Evaluator -->
+          <div class="calc-card">
+            <h3>⚙️ 2. เครื่องตรวจสอบเกณฑ์ประสิทธิภาพ E₁ / E₂</h3>
+            <p style="font-size:0.88rem; color:var(--text-muted);">ตรวจสอบว่าค่า E₁/E₂ ที่ทดลองได้ ผ่านเกณฑ์ภายในช่วงความคลาดเคลื่อน ±2.5% หรือไม่</p>
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.6rem;">
+              <div class="form-group">
+                <label for="calcStdE1">เกณฑ์ตั้งต้น E₁</label>
+                <input type="number" id="calcStdE1" class="form-input" value="80" step="any">
+              </div>
+              <div class="form-group">
+                <label for="calcStdE2">เกณฑ์ตั้งต้น E₂</label>
+                <input type="number" id="calcStdE2" class="form-input" value="80" step="any">
+              </div>
+              <div class="form-group">
+                <label for="calcTolPct">คลาดเคลื่อน (±%)</label>
+                <input type="number" id="calcTolPct" class="form-input" value="2.5" step="0.5" min="0">
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem;">
+              <div class="form-group">
+                <label for="calcValE1">ค่า E₁ ที่ทำได้จริง (%)</label>
+                <input type="number" id="calcValE1" class="form-input" value="82.50" step="any">
+              </div>
+              <div class="form-group">
+                <label for="calcValE2">ค่า E₂ ที่ทำได้จริง (%)</label>
+                <input type="number" id="calcValE2" class="form-input" value="78.50" step="any">
+              </div>
+            </div>
+            <div class="calc-output" id="calcE1E2Output"></div>
+          </div>
+
+          <!-- Calculator 3: IOC Calculator -->
+          <div class="calc-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;">
+              <h3>✅ 3. เครื่องคำนวณค่าความตรงเชิงเนื้อหา (IOC)</h3>
+              <select id="iocExpertCountSelect" class="form-input" style="padding:0.3rem 0.6rem; font-size:0.84rem;">
+                <option value="3" selected>ผู้เชี่ยวชาญ 3 คน</option>
+                <option value="5">ผู้เชี่ยวชาญ 5 คน</option>
+                <option value="7">ผู้เชี่ยวชาญ 7 คน</option>
+              </select>
+            </div>
+            <p style="font-size:0.88rem; color:var(--text-muted);">คลิกเลือกคะแนนประเมินของผู้เชี่ยวชาญแต่ละท่านเพื่อดูค่า IOC ทันที (เกณฑ์ ≥ 0.50)</p>
+            <div class="ioc-experts-list" id="iocExpertsContainer"></div>
+            <div class="calc-output" id="calcIOCOutput"></div>
+          </div>
+
+          <!-- Calculator 4: Krejcie & Morgan + 5-Level Mean Interpreter -->
+          <div class="calc-card">
+            <h3>👥 4. ตาราง Krejcie &amp; Morgan + แปลผลค่าเฉลี่ย</h3>
+            <p style="font-size:0.88rem; color:var(--text-muted);">คำนวณขนาดกลุ่มตัวอย่างจากประชากร (N) และแปลความหมายค่าเฉลี่ย 5 ระดับสากล</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem;">
+              <div class="form-group">
+                <label for="calcPopN">จำนวนประชากร (N)</label>
+                <input type="number" id="calcPopN" class="form-input" value="1000" min="10" step="1">
+              </div>
+              <div class="form-group">
+                <label for="calcMeanVal">ค่าเฉลี่ย 5 ระดับ (x̄)</label>
+                <input type="number" id="calcMeanVal" class="form-input" value="3.85" min="1" max="5" step="0.01">
+              </div>
+            </div>
+            <div class="calc-output" id="calcKMOutput"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Sub-panel C: Progress Dashboard -->
+      <div id="sub-dashboard" class="subtool-panel" style="display:none;">
+        <div id="progressDashboardArea"></div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>สร้างขึ้นเพื่อเตรียมสอบปลายภาควิชา <strong>การวิจัยทางการศึกษาและวิจัยในชั้นเรียน (Educational &amp; Classroom Action Research)</strong> • Aj. Por • บันทึกความก้าวหน้าอัตโนมัติในเบราว์เซอร์ของคุณ</p>
+  </footer>
+
+  <!-- Data & Application Scripts -->
+  <script src="js/data-study.js"></script>
+  <script src="js/data-quiz.js"></script>
+  <script src="js/data-mock.js"></script>
+  <script src="js/data-flashcards.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
